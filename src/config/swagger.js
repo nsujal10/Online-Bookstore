@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:https://Online-Bookstore.vercel.app/api/v1"
+        url: "http://localhost:5000"
       }
     ],
     components: {
