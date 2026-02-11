@@ -30,8 +30,14 @@ app.use(helmet());
 // Rate limiting
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => {
+    return req.ip;   // 🔥 Explicitly use trusted IP
+  }
 }));
+
 
 // CORS
 app.use(cors());
