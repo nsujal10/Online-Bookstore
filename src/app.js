@@ -20,6 +20,9 @@ const app = express();
 
 app.set("trust proxy", 1); 
 
+app.get("/favicon.ico", (req, res) => res.status(204).end());
+
+
 app.get("/api/v1/admin-test", protect, authorize("ADMIN"), (req, res) => {
   res.json({ message: "Admin route working" });
 });
