@@ -1,7 +1,7 @@
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
-import rateLimit from "express-rate-limit";
+import rateLimit , { ipKeyGenerator } from "express-rate-limit";
 import morgan from "morgan";
 
 import authRoutes from "./routes/auth.routes.js";
@@ -30,17 +30,13 @@ app.get("/api/v1/admin-test", protect, authorize("ADMIN"), (req, res) => {
 // Security headers
 app.use(helmet());
 
-// Rate limiting
-app.use(rateLimit({
+const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-  keyGenerator: (req) => {
-    return req.ip;   // 🔥 Explicitly use trusted IP
-  }
-}));
+  keyGenerator: (req) => ipKeyGenerator(req)
+});
 
+app.use(limiter);
 
 // CORS
 app.use(cors());
